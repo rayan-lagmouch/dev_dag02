@@ -71,23 +71,6 @@ class ContactController extends Controller
     // Verwijder een contact
     public function destroy(Contact $contact)
     {
-        // Scenario 1: Check if the contact is associated with any reservations
-        $reservation = Reservation::where('contact_id', $contact->id)->first();
-
-        if ($reservation) {
-            // If the contact is associated with a reservation, update the reservation and set contact_id to null
-            $reservation->update([
-                'contact_id' => null, // Remove the contact from the reservation
-            ]);
-        }
-
-        // Scenario 2: Check if the contact is inactive
-        if ($contact->is_active === false) {
-            // If the contact is inactive, show an error message and prevent deletion
-            return redirect()->route('contacts.index')->with('error', 'Contact info is inactive and cannot be deleted');
-        }
-
-        // Delete the contact after ensuring it is not associated with any reservation and is active
         $contact->delete();
 
         // Redirect back to the contacts index with a success message

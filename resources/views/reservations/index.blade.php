@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto mt-8 px-6">
-        <h1 class="text-3xl font-semibold mb-6 text-gray-800">All Reservations</h1>
+        <h1 class="text-3xl font-semibold mb-6 text-white">All Reservations</h1>
 
         <a href="{{ route('reservations.create') }}" class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200 mb-4 inline-block">
             Add New Reservation

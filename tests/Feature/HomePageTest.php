@@ -1,20 +1,22 @@
 <?php
-
-namespace Tests\Feature;
-
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class HomePageTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
+    public function testHomePageIsAvailable()
     {
-        $response = $this->get('/');
 
-        $response->assertStatus(200);
+        $url = 'http://localhost';
+
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+
+        $this->assertEquals(200, $httpCode, "De homepage is niet beschikbaar. HTTP-code: $httpCode");
     }
 }

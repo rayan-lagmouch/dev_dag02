@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -18,9 +17,8 @@ return new class extends Migration
             $table->string('player_name', 100);
             $table->integer('score_value');
             $table->string('frame_details', 100)->nullable(); // JSON/text-friendly
+            $table->timestamps(); // This will add created_at and updated_at
         });
-
-
     }
 
     /**

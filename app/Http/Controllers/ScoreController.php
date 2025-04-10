@@ -14,6 +14,13 @@ class ScoreController extends Controller
         return view('scores.index', compact('scores'));
     }
 
+// Show the specified score
+public function show(Score $score)
+{
+    return view('scores.show', compact('score'));
+}
+
+
     // Show the form for creating a new score
     public function create()
     {

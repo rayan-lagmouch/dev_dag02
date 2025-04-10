@@ -7,7 +7,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
                     <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
-                        {{ __('New Contact') }}
+                        {{ __('New Contact for Reservation') }}
                     </h2>
 
                     @if (session('success'))
@@ -25,7 +25,7 @@
                     <form action="{{ route('contacts.store') }}" method="POST">
                         @csrf
 
-                        <!-- Person -->
+                        <!-- Person Selection -->
                         <div class="mb-4">
                             <label for="person_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Person</label>
                             <select name="person_id" id="person_id" required class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
@@ -65,7 +65,6 @@
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                             @enderror
                         </div>
-
 
                         <!-- Submit Button -->
                         <div class="mb-4">

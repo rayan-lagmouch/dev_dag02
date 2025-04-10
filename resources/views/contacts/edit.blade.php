@@ -1,42 +1,71 @@
-<!-- resources/views/contacts/edit.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Edit Contact</h1>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
 
-        <form action="{{ route('contacts.update', $contact->id) }}" method="POST">
-            @csrf
-            @method('PUT')
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
+                        {{ __('Edit Contact') }}
+                    </h2>
 
-            <div class="form-group">
-                <label for="person_id">Person</label>
-                <select name="person_id" id="person_id" class="form-control" required>
-                    @foreach($people as $person)
-                        <option value="{{ $person->id }}" {{ $contact->person_id == $person->id ? 'selected' : '' }}>
-                            {{ $person->first_name }} {{ $person->last_name }}
-                        </option>
-                    @endforeach
-                </select>
+                    <form action="{{ route('contacts.update', $contact->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        <!-- Person -->
+                        <div class="mb-4">
+                            <label for="person_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Person</label>
+                            <select name="person_id" id="person_id" required class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
+                                @foreach($people as $person)
+                                    <option value="{{ $person->id }}" {{ $contact->person_id == $person->id ? 'selected' : '' }}>
+                                        {{ $person->first_name }} {{ $person->last_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('person_id')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Emergency Contact Name -->
+                        <div class="mb-4">
+                            <label for="emergency_contact_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Emergency Contact Name</label>
+                            <input type="text" name="emergency_contact_name" id="emergency_contact_name" value="{{ old('emergency_contact_name', $contact->emergency_contact_name) }}" class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
+                            @error('emergency_contact_name')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Emergency Contact Phone -->
+                        <div class="mb-4">
+                            <label for="emergency_contact_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Emergency Contact Phone</label>
+                            <input type="text" name="emergency_contact_phone" id="emergency_contact_phone" value="{{ old('emergency_contact_phone', $contact->emergency_contact_phone) }}" class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
+                            @error('emergency_contact_phone')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-4">
+                            <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
+                            <input type="text" name="address" id="address" value="{{ old('address', $contact->address) }}" class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
+                            @error('address')
+                            <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Submit -->
+                        <div>
+                            <button type="submit" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
+                                Update Contact
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="emergency_contact_name">Emergency Contact Name</label>
-                <input type="text" name="emergency_contact_name" id="emergency_contact_name" class="form-control" value="{{ $contact->emergency_contact_name }}">
-            </div>
-
-            <div class="form-group">
-                <label for="emergency_contact_phone">Emergency Contact Phone</label>
-                <input type="text" name="emergency_contact_phone" id="emergency_contact_phone" class="form-control" value="{{ $contact->emergency_contact_phone }}">
-            </div>
-
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" name="address" id="address" class="form-control" value="{{ $contact->address }}">
-            </div>
-
-            <button type="submit" class="btn btn-primary">Update</button>
-        </form>
+        </div>
     </div>
 @endsection

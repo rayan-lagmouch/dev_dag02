@@ -8,10 +8,14 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // First create users
-        $this->call(UserSeeder::class);
-
-        // Then create roles and assign them
-        $this->call(RoleSeeder::class);
+        $this->call([
+            UserSeeder::class,
+            RoleSeeder::class,
+            PeopleSeeder::class,
+            LanesSeeder::class,
+            ReservationSeeder::class,
+            ContactSeeder::class,
+            OrderSeeder::class,
+        ]);
     }
 }

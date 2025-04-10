@@ -29,6 +29,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Order routes
+Route::middleware(['auth'])->group(function () {
+    Route::post('orders/{id}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+    Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+});
+
+
 // ===========================
 // 🧩 Role-Based CRUD Routes
 // ===========================

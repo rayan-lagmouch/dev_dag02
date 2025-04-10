@@ -1,28 +1,25 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
+    protected $fillable = ['person_id', 'order_time', 'total_amount', 'payment_method', 'status', 'packages'];
 
-    // Fillable attributes for mass assignment
-    protected $fillable = [
-        'reservation_id',
-        'order_time',
-        'total_amount',
-        'payment_method',
-        'is_paid'
+    protected $casts = [
+        'order_time' => 'datetime',
     ];
 
-    // Relationship with Reservation
-    public function reservation()
+    public function person()
     {
-        return $this->belongsTo(Reservation::class);
+        return $this->belongsTo(Person::class);
     }
 
-    // If you need any additional methods or custom logic, you can add them here
+    // Accessor to convert the string back to an array
+    public function getPackagesAttribute($value)
+    {
+        return $value ? explode(',', $value) : [];
+    }
 }
+

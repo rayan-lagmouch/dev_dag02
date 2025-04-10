@@ -33,12 +33,12 @@
 
             <div class="mb-4">
                 <label for="order_time" class="block text-sm font-medium text-gray-700">Order Time</label>
-                <input type="datetime-local" name="order_time" id="order_time" class="mt-1 p-2 border border-gray-300 rounded" value="{{ \Carbon\Carbon::parse($order->order_time)->format('Y-m-d\TH:i') }}" required>
+                <input type="datetime-local" name="order_time" id="order_time" class="mt-1 p-2 border border-gray-300 rounded" value="{{ \Carbon\Carbon::parse($order->order_time)->format('Y-m-d\TH:i') }}" readonly>
             </div>
 
             <div class="mb-4">
                 <label for="total_amount" class="block text-sm font-medium text-gray-700">Total Amount</label>
-                <input type="number" name="total_amount" id="total_amount" class="mt-1 p-2 border border-gray-300 rounded" value="{{ $order->total_amount }}" required>
+                <input type="number" name="total_amount" id="total_amount" class="mt-1 p-2 border border-gray-300 rounded" value="{{ $order->total_amount }}" readonly>
             </div>
 
             <div class="mb-4">
@@ -62,7 +62,8 @@
                 <label for="packages" class="block text-sm font-medium text-gray-700">Packages</label>
                 <div class="mt-2">
                     @php
-                        $selectedPackages = is_string($order->packages) ? explode(',', $order->packages) : [];
+                        // Ensure packages is a string before using explode()
+                        $selectedPackages = is_array($order->packages) ? $order->packages : explode(',', $order->packages);
                     @endphp
                     <label class="inline-flex items-center mr-4">
                         <input type="checkbox" name="packages[]" value="basic_snack_package" class="form-checkbox" {{ in_array('basic_snack_package', $selectedPackages) ? 'checked' : '' }} />

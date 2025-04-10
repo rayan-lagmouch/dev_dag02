@@ -31,9 +31,17 @@
                     <a href="{{ url('/reservation') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">Reservation</a>
                 </div>
             </div>
+
+            <!-- Login & Register Links -->
+            <div class="flex items-center space-x-4">
+                <a href="/login" class="text-sm font-medium text-gray-500 hover:text-gray-700">Login</a>
+                <span>|</span>
+                <a href="/register" class="text-sm font-medium text-gray-500 hover:text-gray-700">Register</a>
+            </div>
         </div>
     </div>
 </nav>
+
 
 <!-- Page Heading -->
 @isset($header)

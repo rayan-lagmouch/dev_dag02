@@ -14,10 +14,16 @@ return new class extends Migration
         Schema::create('scores', function (Blueprint $table) {
             $table->id();
             $table->timestamp('game_date')->useCurrent();
-            $table->string('player_name', 100);
+            $table->foreignId('player_id')->constrained('players');
             $table->integer('score_value');
-            $table->string('frame_details', 100)->nullable(); // JSON/text-friendly
-            $table->timestamps(); // This will add created_at and updated_at
+            $table->string('frame_details', 100)->nullable();
+            $table->string('game_type')->nullable();  // e.g., "1v1", "team"
+            $table->integer('round_number')->nullable();
+            $table->boolean('is_winner')->default(false);  // true if player won
+            $table->foreignId('match_id')->nullable()->constrained('matches');  // match group
+            $table->integer('game_duration_seconds')->nullable();  // duration in seconds
+            $table->json('score_breakdown')->nullable();  // breakdown of scores
+            $table->timestamps();  // created_at and updated_at fields
         });
     }
 

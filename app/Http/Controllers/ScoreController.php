@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Score;
+use App\Models\Reservation; // Import Reservation model
+use App\Models\Lane;         // Import Lane model
 use Illuminate\Http\Request;
 
 class ScoreController extends Controller
@@ -14,17 +16,20 @@ class ScoreController extends Controller
         return view('scores.index', compact('scores'));
     }
 
-// Show the specified score
-public function show(Score $score)
-{
-    return view('scores.show', compact('score'));
-}
-
+    // Show the specified score
+    public function show(Score $score)
+    {
+        return view('scores.show', compact('score'));
+    }
 
     // Show the form for creating a new score
     public function create()
     {
-        return view('scores.create');
+        $reservations = Reservation::all();  // Fetch all reservations
+        $lanes = Lane::all();                 // Fetch all lanes
+    
+        // Pass them to the view
+        return view('scores.create', compact('reservations', 'lanes'));
     }
 
     // Store a newly created score in storage

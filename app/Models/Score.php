@@ -4,33 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;  // Import Carbon class
 
 class Score extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'game_date',
-        'player_name',
-        'score_value',
-        'frame_details',
+        'game_date', 'player_name', 'score_value', 'frame_details', 'reservation_id', 'lane_id', 'is_completed'
     ];
 
-    // Cast 'game_date' to Carbon instance
-    protected $casts = [
-        'game_date' => 'datetime',  // This will automatically cast the game_date to a Carbon instance
-    ];
-
-    // Define the relationship with Person
-    public function person()
+    /**
+     * Get the reservation that owns the score.
+     */
+    public function reservation()
     {
-        return $this->belongsTo(Person::class, 'player_name', 'first_name');
+        return $this->belongsTo(Reservation::class);
     }
 
-    // Define the relationship with Lane
+    /**
+     * Get the lane that the score belongs to.
+     */
     public function lane()
     {
-        return $this->hasOne(Lane::class, 'score_id');
+        return $this->belongsTo(Lane::class);
     }
 }

@@ -21,6 +21,9 @@
                         <th class="px-6 py-3">Player Name</th>
                         <th class="px-6 py-3">Score</th>
                         <th class="px-6 py-3">Frame Details</th>
+                        <th class="px-6 py-3">Game Type</th>
+                        <th class="px-6 py-3">Round Number</th>
+                        <th class="px-6 py-3">Game Date</th>
                         <th class="px-6 py-3">Actions</th>
                     </tr>
                 </thead>
@@ -30,6 +33,9 @@
                             <td class="px-6 py-4">{{ $score->player_name }}</td>
                             <td class="px-6 py-4">{{ $score->score_value }}</td>
                             <td class="px-6 py-4">{{ $score->frame_details }}</td>
+                            <td class="px-6 py-4">{{ $score->game_type }}</td>
+                            <td class="px-6 py-4">{{ $score->round_number }}</td>
+                            <td class="px-6 py-4">{{ $score->game_date ? \Carbon\Carbon::parse($score->game_date)->format('Y-m-d H:i') : 'N/A' }}</td>
                             <td class="px-6 py-4 space-x-2">
                                 <!-- Show Button -->
                                 <a href="{{ route('scores.show', $score->id) }}" class="inline-block bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded transition duration-200">
@@ -55,7 +61,7 @@
 
                     @if($scores->isEmpty())
                         <tr>
-                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                            <td colspan="7" class="px-6 py-4 text-center text-gray-500">
                                 No scores available.
                             </td>
                         </tr>

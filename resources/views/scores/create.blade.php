@@ -7,11 +7,41 @@
         <form action="{{ route('scores.store') }}" method="POST" class="space-y-6">
             @csrf
 
-            <!-- Player Name -->
+            <!-- Player Name (Text Input instead of Dropdown) -->
             <div class="space-y-2">
                 <label for="player_name" class="block text-lg font-medium text-gray-700">Player Name</label>
                 <input type="text" name="player_name" id="player_name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
                 @error('player_name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Reservation ID Dropdown -->
+            <div class="space-y-2">
+                <label for="reservation_id" class="block text-lg font-medium text-gray-700">Reservation</label>
+                <select name="reservation_id" id="reservation_id" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                    <option value="" disabled selected>Select a Reservation</option>
+                    @foreach($reservations as $reservation)
+                        <option value="{{ $reservation->id }}">
+                            {{ $reservation->id }} - {{ $reservation->person->first_name }} {{ $reservation->person->last_name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('reservation_id')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Lane ID Dropdown -->
+            <div class="space-y-2">
+                <label for="lane_id" class="block text-lg font-medium text-gray-700">Lane</label>
+                <select name="lane_id" id="lane_id" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                    <option value="" disabled selected>Select a Lane</option>
+                    @foreach($lanes as $lane)
+                        <option value="{{ $lane->id }}">{{ $lane->lane_number }}</option>
+                    @endforeach
+                </select>
+                @error('lane_id')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>

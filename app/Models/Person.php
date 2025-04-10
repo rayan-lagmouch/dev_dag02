@@ -11,13 +11,13 @@ class Person extends Model
 
     // Fillable attributes
     protected $fillable = [
+        'user_id',
         'first_name',
         'last_name',
         'email',
         'phone_number',
-        'role'
+        'role',
     ];
-
     // Relationship with Contacts
     public function contact()
     {
@@ -28,6 +28,13 @@ class Person extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class, 'person_id');
+    }
+// Person Model
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     // If needed, additional methods or relationships can be added.

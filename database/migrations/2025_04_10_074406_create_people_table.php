@@ -6,27 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('people', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();  // Add user_id and link to the users table
             $table->string('first_name', 100);
             $table->string('last_name', 100);
             $table->string('email', 150)->unique();
             $table->string('phone_number', 20)->nullable();
             $table->string('role', 50)->default('Customer');
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();  // This will add the created_at and updated_at columns
         });
-
-
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('people');

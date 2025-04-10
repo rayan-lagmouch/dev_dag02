@@ -7,6 +7,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
+
 // Homepage
 Route::get('/', function () {
     return view('home');
@@ -15,6 +16,13 @@ Route::get('/', function () {
 Route::get('/klant-reservering', function () {
     return view('client-reservation');
 });
+
+// Route for displaying the guest order page
+Route::get('/guest-order', [OrderController::class, 'showGuestOrderForm'])->name('guest.order');
+// Route for processing the guest order form (POST request)
+Route::post('/guest-order', [OrderController::class, 'processGuestOrder'])->name('guest.processOrder');
+Route::get('/order/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
+
 
 
 // Dashboard (accessible to all authenticated users)

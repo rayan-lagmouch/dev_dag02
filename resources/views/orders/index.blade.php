@@ -52,9 +52,9 @@
                             {{ ucfirst(str_replace('_', ' ', $order->status)) }}
                         </td>
                         <td class="px-6 py-3 text-sm text-gray-800">
-                            @if($order->packages && is_array($order->packages))
-                                @foreach($order->packages as $package)
-                                    <span class="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-xs font-semibold">{{ ucfirst(str_replace('_', ' ', $package)) }}</span>
+                            @if($order->package_names && is_array($order->package_names))
+                                @foreach($order->package_names as $package)
+                                    <span class="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-xs font-semibold">{{ $package }}</span>
                                 @endforeach
                             @else
                                 <span class="text-gray-500">No packages selected</span>

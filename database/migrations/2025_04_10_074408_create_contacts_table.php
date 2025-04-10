@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('emergency_contact_name', 100)->nullable();
             $table->string('emergency_contact_phone', 20)->nullable();
             $table->string('address', 100)->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
 

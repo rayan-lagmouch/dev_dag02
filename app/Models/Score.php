@@ -10,7 +10,23 @@ class Score extends Model
     use HasFactory;
 
     protected $fillable = [
-        'game_date', 'player_name', 'score_value', 'frame_details', 'reservation_id', 'lane_id', 'is_completed'
+            'player_name',
+            'score_value',
+            'round_number',
+            'game_date',
+            'reservation_id',
+            'lane_id',
+            // Frame throws
+            'frame_1_throw_1', 'frame_1_throw_2',
+            'frame_2_throw_1', 'frame_2_throw_2',
+            'frame_3_throw_1', 'frame_3_throw_2',
+            'frame_4_throw_1', 'frame_4_throw_2',
+            'frame_5_throw_1', 'frame_5_throw_2',
+            'frame_6_throw_1', 'frame_6_throw_2',
+            'frame_7_throw_1', 'frame_7_throw_2',
+            'frame_8_throw_1', 'frame_8_throw_2',
+            'frame_9_throw_1', 'frame_9_throw_2',
+            'frame_10_throw_1', 'frame_10_throw_2', 'frame_10_throw_3',  
     ];
 
     /**

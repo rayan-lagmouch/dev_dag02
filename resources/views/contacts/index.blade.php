@@ -38,7 +38,7 @@
                             <tbody>
                             @foreach($contacts as $contact)
                                 <tr>
-                                    <td class="border px-4 py-2">{{ $contact->person->first_name }} {{ $contact->person->last_name }}</td>
+                                    <td class="border px-4 py-2">{{ $contact->person->first_name ?? 'N/A' }} {{ $contact->person->last_name ?? '' }} </td>
                                     <td class="border px-4 py-2">{{ $contact->emergency_contact_name }}</td>
                                     <td class="border px-4 py-2">{{ $contact->emergency_contact_phone }}</td>
                                     <td class="border px-4 py-2">{{ $contact->address }}</td>

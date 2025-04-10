@@ -51,7 +51,7 @@
                         <!-- Emergency Contact Phone -->
                         <div class="mb-4">
                             <label for="emergency_contact_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Emergency Contact Phone</label>
-                            <input type="text" name="emergency_contact_phone" id="emergency_contact_phone" value="{{ old('emergency_contact_phone') }}" class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
+                            <input type="tel" name="emergency_contact_phone" id="emergency_contact_phone" value="{{ old('emergency_contact_phone') }}" class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
                             @error('emergency_contact_phone')
                             <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                             @enderror

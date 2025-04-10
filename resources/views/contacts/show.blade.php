@@ -30,6 +30,11 @@
                         <div class="mt-1">{{ $contact->address }}</div>
                     </div>
 
+                    <div class="mb-4">
+                        <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">Created At</span>
+                        <div class="mt-1">{{ $contact->created_at->format('F j, Y g:i A') }}</div>
+                    </div>
+
                     <a href="{{ route('contacts.index') }}" class="inline-block px-6 py-2 bg-gray-600 text-white font-semibold rounded-md shadow-md hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600">
                         Back to All Contacts
                     </a>

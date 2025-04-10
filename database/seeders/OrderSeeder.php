@@ -2,16 +2,28 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class OrderSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        //
+        DB::table('order_tables')->insert([
+            [
+                'reservation_id' => 1,
+                'order_time' => now(),
+                'total_amount' => 50.75,
+                'payment_method' => 'Credit Card',
+                'is_paid' => true,
+            ],
+            [
+                'reservation_id' => 2,
+                'order_time' => now(),
+                'total_amount' => 35.00,
+                'payment_method' => 'Cash',
+                'is_paid' => false,
+            ],
+        ]);
     }
 }

@@ -7,14 +7,14 @@
         <form action="{{ route('scores.store') }}" method="POST" class="space-y-6">
             @csrf
 
-            <!-- Player Name (Text Input instead of Dropdown) -->
             <div class="space-y-2">
-                <label for="player_name" class="block text-lg font-medium text-gray-300">Player Name</label>
-                <input type="text" name="player_name" id="player_name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-300" required>
-                @error('player_name')
-                    <p class="text-red-300 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
+    <label for="player_name" class="block text-lg font-medium text-gray-300">Player Name</label>
+    <input type="text" name="player_name" id="player_name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-300" required>
+    @error('player_name')
+        <p class="text-red-300 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
 
             <!-- Select Reservation (without lane info in dropdown) -->
             <div>

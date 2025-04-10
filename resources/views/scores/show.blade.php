@@ -36,11 +36,6 @@
                 </ul>
             </div>
 
-            <!-- Reservation ID -->
-            <div class="mb-4">
-                <strong class="text-gray-700">Reservation ID:</strong>
-                <p class="text-lg text-gray-800">{{ $score->reservation_id }}</p>
-            </div>
 
             <!-- Player Name from Reservation -->
             <div class="mb-4">

@@ -13,11 +13,9 @@ class ScoreController extends Controller
     public function index()
     {
         try {
-            // Fetch all scores, optionally you can use joins if necessary.
             $scores = Score::with('reservation', 'reservation.lane')->get();
             return view('scores.index', compact('scores'));
         } catch (\Exception $e) {
-            // Log the error and show a user-friendly message
             Log::error('Failed to fetch scores: ' . $e->getMessage());
             return redirect()->route('scores.index')->with('error', 'Er is iets mis gegaan bij het ophalen van scores.');
         }
@@ -38,84 +36,96 @@ class ScoreController extends Controller
     public function create()
     {
         try {
-            // Fetch all reservations
-            $reservations = Reservation::all();
+            // Fetch all reservations with their associated lane details
+            $reservations = Reservation::with('lane')->get();
+            
             return view('scores.create', compact('reservations'));
         } catch (\Exception $e) {
             Log::error('Failed to fetch reservations: ' . $e->getMessage());
             return redirect()->route('scores.index')->with('error', 'Er is iets mis gegaan bij het ophalen van de reserveringen.');
         }
     }
+    
 
     // Store a newly created score in storage
-// Store a newly created score in storage
-public function store(Request $request)
-{
-    // Validating the form input
-    $request->validate([
-        'player_name' => 'required|string|max:100',
-        'score_value' => 'required|integer',
-        'frame_details' => 'nullable|string|max:100',
-        'throws' => 'required|array', // This will be an array of throws (one for each roll)
-    ]);
+    public function store(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'player_name' => 'required|string|max:100',
+                'round_number' => 'nullable|integer',
+                'game_date' => 'nullable|date',
+                'reservation_id' => 'nullable|exists:reservations,id',
+                'lane_id' => 'nullable|exists:lanes,id',
+                'frame_1_throw_1' => 'required|integer|min:0|max:10',
+                'frame_1_throw_2' => 'nullable|integer|min:0|max:10',
+                'frame_2_throw_1' => 'required|integer|min:0|max:10',
+                'frame_2_throw_2' => 'nullable|integer|min:0|max:10',
+                'frame_3_throw_1' => 'required|integer|min:0|max:10',
+                'frame_3_throw_2' => 'nullable|integer|min:0|max:10',
+                'frame_4_throw_1' => 'required|integer|min:0|max:10',
+                'frame_4_throw_2' => 'nullable|integer|min:0|max:10',
+                'frame_5_throw_1' => 'required|integer|min:0|max:10',
+                'frame_5_throw_2' => 'nullable|integer|min:0|max:10',
+                'frame_6_throw_1' => 'required|integer|min:0|max:10',
+                'frame_6_throw_2' => 'nullable|integer|min:0|max:10',
+                'frame_7_throw_1' => 'required|integer|min:0|max:10',
+                'frame_7_throw_2' => 'nullable|integer|min:0|max:10',
+                'frame_8_throw_1' => 'required|integer|min:0|max:10',
+                'frame_8_throw_2' => 'nullable|integer|min:0|max:10',
+                'frame_9_throw_1' => 'required|integer|min:0|max:10',
+                'frame_9_throw_2' => 'nullable|integer|min:0|max:10',
+                'frame_10_throw_1' => 'required|integer|min:0|max:10',
+                'frame_10_throw_2' => 'nullable|integer|min:0|max:10',
+                'frame_10_throw_3' => 'nullable|integer|min:0|max:10',
+            ]);
 
-    try {
-        // Get the throws
-        $throws = $request->throws; // An array of numbers, each representing a throw
-
-        // Start building the score logic
-        $total_score = 0;
-        $frame_score = 0;
-        $frame_number = 1;
-
-        foreach ($throws as $index => $score) {
-            if ($frame_number <= 10) {  // Ensure only 10 frames are scored
-                // Check if the throw is a strike (first throw of the frame)
-                if ($score == 10) {
-                    $frame_score = 10;
-                    $total_score += $frame_score;
-                    $frame_number++; // Move to the next frame
+            $throws = [];
+            for ($i = 1; $i <= 10; $i++) {
+                $throws[] = $validated["frame_{$i}_throw_1"];
+                if (isset($validated["frame_{$i}_throw_2"])) {
+                    $throws[] = $validated["frame_{$i}_throw_2"];
                 }
-                // Check if the throw is a spare (2nd throw of the frame)
-                else if (isset($throws[$index + 1]) && $score + $throws[$index + 1] == 10) {
-                    $frame_score = 10;
-                    $total_score += $frame_score;
-                    $frame_number++; // Move to the next frame
-                }
-                // Normal frame (open frame)
-                else {
-                    $frame_score = $score + $throws[$index + 1];
-                    $total_score += $frame_score;
-                    $frame_number++; // Move to the next frame
+                if ($i === 10 && isset($validated["frame_10_throw_3"])) {
+                    $throws[] = $validated["frame_10_throw_3"];
                 }
             }
+
+            // Calculate score
+            $total_score = 0;
+            $index = 0;
+            for ($frame = 1; $frame <= 10; $frame++) {
+                $first = $throws[$index] ?? 0;
+                $second = $throws[$index + 1] ?? 0;
+                $third = $throws[$index + 2] ?? 0;
+
+                if ($first === 10) {
+                    $total_score += 10 + $second + $third;
+                    $index += 1;
+                } elseif ($first + $second === 10) {
+                    $total_score += 10 + $third;
+                    $index += 2;
+                } else {
+                    $total_score += $first + $second;
+                    $index += 2;
+                }
+            }
+
+            $validated['score_value'] = $total_score;
+
+            Score::create($validated);
+
+            return redirect()->route('scores.index')->with('success', 'Score succesvol aangemaakt.');
+        } catch (\Exception $e) {
+            Log::error('Failed to store score: ' . $e->getMessage());
+            return redirect()->route('scores.index')->with('error', 'Er is iets mis gegaan bij het opslaan van de score.');
         }
-
-        // Create the score record
-        Score::create([
-            'player_name' => $request->player_name,
-            'score_value' => $total_score,
-            'round_number' => $frame_number,
-            'game_date' => now(),
-            'first_throw' => $throws[0] ?? 0,
-            'second_throw' => $throws[1] ?? 0,
-            'total_frame_score' => $total_score,
-        ]);
-
-        return redirect()->route('scores.index')->with('success', 'Score succesvol aangemaakt.');
-
-    } catch (\Exception $e) {
-        Log::error('Failed to store score: ' . $e->getMessage());
-        return redirect()->route('scores.index')->with('error', 'Er is iets mis gegaan bij het opslaan van de score.');
     }
-}
-
 
     // Show the form for editing the specified score
     public function edit(Score $score)
     {
         try {
-            // Haal alle reserveringen op voor de selectie
             $reservations = Reservation::all();
             return view('scores.edit', compact('score', 'reservations'));
         } catch (\Exception $e) {
@@ -127,7 +137,6 @@ public function store(Request $request)
     // Update the specified score in storage
     public function update(Request $request, Score $score)
     {
-        // Validatie van de nieuwe gegevens
         $request->validate([
             'player_name' => 'required|string|max:100',
             'reservation_id' => 'required|exists:reservations,id',
@@ -136,19 +145,16 @@ public function store(Request $request)
         ]);
 
         try {
-            // Zoek de reservering die overeenkomt met het geselecteerde reservation_id
             $reservation = Reservation::findOrFail($request->reservation_id);
-            
-            // Update de score
+
             $score->update([
                 'player_name' => $request->player_name,
                 'reservation_id' => $request->reservation_id,
-                'lane_id' => $reservation->lane_id,  // Verkrijg lane_id van de reservering
+                'lane_id' => $reservation->lane_id,
                 'score_value' => $request->score_value,
                 'frame_details' => $request->frame_details,
             ]);
 
-            // Feedback voor de gebruiker
             return redirect()->route('scores.index')->with('success', 'Score succesvol bijgewerkt.');
         } catch (\Exception $e) {
             Log::error('Failed to update score: ' . $e->getMessage());
@@ -161,7 +167,6 @@ public function store(Request $request)
     {
         try {
             $score->delete();
-            // Feedback voor de gebruiker
             return redirect()->route('scores.index')->with('success', 'Score succesvol verwijderd.');
         } catch (\Exception $e) {
             Log::error('Failed to delete score: ' . $e->getMessage());

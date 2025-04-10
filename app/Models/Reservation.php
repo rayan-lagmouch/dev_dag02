@@ -31,4 +31,9 @@ class Reservation extends Model
     {
         return $this->belongsTo(Lane::class);
     }
+
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
+    }
 }

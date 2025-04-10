@@ -6,7 +6,7 @@ class HomePageTest extends TestCase
     public function testHomePageIsAvailable()
     {
 
-        $url = 'http://localhost';
+        $url = 'http://localhost/';
 
 
         $ch = curl_init($url);

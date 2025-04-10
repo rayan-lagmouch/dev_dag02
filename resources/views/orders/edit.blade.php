@@ -61,20 +61,23 @@
             <div class="mb-4">
                 <label for="packages" class="block text-sm font-medium text-gray-700">Packages</label>
                 <div class="mt-2">
+                    @php
+                        $selectedPackages = is_string($order->packages) ? explode(',', $order->packages) : [];
+                    @endphp
                     <label class="inline-flex items-center mr-4">
-                        <input type="checkbox" name="packages[]" value="basic_snack_package" class="form-checkbox" {{ in_array('basic_snack_package', explode(',', $order->packages)) ? 'checked' : '' }} />
+                        <input type="checkbox" name="packages[]" value="basic_snack_package" class="form-checkbox" {{ in_array('basic_snack_package', $selectedPackages) ? 'checked' : '' }} />
                         <span class="ml-2">Basic Snack Package ($15)</span>
                     </label>
                     <label class="inline-flex items-center mr-4">
-                        <input type="checkbox" name="packages[]" value="luxury_snack_package" class="form-checkbox" {{ in_array('luxury_snack_package', explode(',', $order->packages)) ? 'checked' : '' }} />
+                        <input type="checkbox" name="packages[]" value="luxury_snack_package" class="form-checkbox" {{ in_array('luxury_snack_package', $selectedPackages) ? 'checked' : '' }} />
                         <span class="ml-2">Luxury Snack Package ($30)</span>
                     </label>
                     <label class="inline-flex items-center mr-4">
-                        <input type="checkbox" name="packages[]" value="children_party" class="form-checkbox" {{ in_array('children_party', explode(',', $order->packages)) ? 'checked' : '' }} />
+                        <input type="checkbox" name="packages[]" value="children_party" class="form-checkbox" {{ in_array('children_party', $selectedPackages) ? 'checked' : '' }} />
                         <span class="ml-2">Children's Party ($28.50)</span>
                     </label>
                     <label class="inline-flex items-center">
-                        <input type="checkbox" name="packages[]" value="bachelor_party" class="form-checkbox" {{ in_array('bachelor_party', explode(',', $order->packages)) ? 'checked' : '' }} />
+                        <input type="checkbox" name="packages[]" value="bachelor_party" class="form-checkbox" {{ in_array('bachelor_party', $selectedPackages) ? 'checked' : '' }} />
                         <span class="ml-2">Bachelor Party ($200)</span>
                     </label>
                 </div>

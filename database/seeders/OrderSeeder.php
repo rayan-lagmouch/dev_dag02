@@ -11,19 +11,26 @@ class OrderSeeder extends Seeder
     {
         DB::table('orders')->insert([
             [
-                'reservation_id' => 1,
+                'person_id' => 1,
                 'order_time' => now(),
                 'total_amount' => 50.75,
-                'payment_method' => 'Credit Card',
-                'is_paid' => true,
+                'payment_method' => 'online',
+                'status' => 'paid',
+                'packages' => json_encode(['basic_snack_package', 'luxury_snack_package']), // Correctly encode the packages
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'reservation_id' => 2,
+                'person_id' => 2,
                 'order_time' => now(),
                 'total_amount' => 35.00,
-                'payment_method' => 'Cash',
-                'is_paid' => false,
+                'payment_method' => 'cash',
+                'status' => 'cancelled',
+                'packages' => json_encode(['children_party']), // Correctly encode the packages
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
+
     }
 }

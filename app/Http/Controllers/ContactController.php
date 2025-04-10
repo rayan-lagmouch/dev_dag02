@@ -47,21 +47,25 @@ class ContactController extends Controller
     }
 
     // Update the specified contact in storage
-    public function update(Request $request, Contact $contact)
+    public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
+        $contact = Contact::findOrFail($id);
+
+        // Validate the data
+        $validated = $request->validate([
             'person_id' => 'required|exists:people,id',
-            'emergency_contact_name' => 'nullable|string|max:100',
-            'emergency_contact_phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:100',
+            'emergency_contact_name' => 'required|string|max:255',
+            'emergency_contact_phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
             'is_active' => 'required|boolean',
         ]);
 
-        // Update the contact record with validated data
-        $contact->update($validatedData);
+        // Update the contact
+        $contact->update($validated);
 
         return redirect()->route('contacts.index')->with('success', 'Contact updated successfully.');
     }
+
 
 
     // Remove the specified contact from storage

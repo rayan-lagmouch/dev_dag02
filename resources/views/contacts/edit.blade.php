@@ -19,7 +19,7 @@
                             <label for="person_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Person</label>
                             <select name="person_id" id="person_id" required class="mt-1 block w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-white">
                                 @foreach($people as $person)
-                                    <option value="{{ $person->id }}" {{ $contact->person_id == $person->id ? 'selected' : '' }}>
+                                    <option value="{{ $person->id }}" {{ old('person_id', $contact->person_id) == $person->id ? 'selected' : '' }}>
                                         {{ $person->first_name }} {{ $person->last_name }}
                                     </option>
                                 @endforeach

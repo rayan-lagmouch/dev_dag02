@@ -17,6 +17,22 @@
                 @enderror
             </div>
 
+            <!-- Reservation ID Dropdown -->
+            <div class="space-y-2">
+                <label for="reservation_id" class="block text-lg font-medium text-gray-700">Reservation</label>
+                <select name="reservation_id" id="reservation_id" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                    <option value="" disabled>Select a Reservation</option>
+                    @foreach($reservations as $reservation)
+                        <option value="{{ $reservation->id }}" {{ $score->reservation_id == $reservation->id ? 'selected' : '' }}>
+                            {{ $reservation->id }} - {{ $reservation->person->first_name }} {{ $reservation->person->last_name }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('reservation_id')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
             <!-- Score -->
             <div class="space-y-2">
                 <label for="score_value" class="block text-lg font-medium text-gray-700">Score</label>

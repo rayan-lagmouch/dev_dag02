@@ -9,8 +9,13 @@ use Illuminate\Support\Facades\Route;
 
 // Homepage
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::get('/klant-reservering', function () {
+    return view('client-reservation');
+});
+
 
 // Dashboard (accessible to all authenticated users)
 Route::get('/dashboard', function () {
@@ -23,6 +28,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Order routes
+Route::middleware(['auth'])->group(function () {
+    Route::post('orders/{id}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+    Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+});
+
 
 // ===========================
 // 🧩 Role-Based CRUD Routes

@@ -1,24 +1,55 @@
-<!-- resources/views/contacts/show.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Contact Details</h1>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
 
-        <div class="mb-3">
-            <strong>Person:</strong> {{ $contact->person->first_name }} {{ $contact->person->last_name }}
-        </div>
-        <div class="mb-3">
-            <strong>Emergency Contact Name:</strong> {{ $contact->emergency_contact_name }}
-        </div>
-        <div class="mb-3">
-            <strong>Emergency Contact Phone:</strong> {{ $contact->emergency_contact_phone }}
-        </div>
-        <div class="mb-3">
-            <strong>Address:</strong> {{ $contact->address }}
-        </div>
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
+                        {{ __('Contact Details') }}
+                    </h2>
 
-        <a href="{{ route('contacts.index') }}" class="btn btn-secondary">Back to All Contacts</a>
+                    <div class="mb-4">
+                        <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">Person</span>
+                        <div class="mt-1">{{ $contact->person->first_name }} {{ $contact->person->last_name }}</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">Emergency Contact Name</span>
+                        <div class="mt-1">{{ $contact->emergency_contact_name }}</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">Emergency Contact Phone</span>
+                        <div class="mt-1">{{ $contact->emergency_contact_phone }}</div>
+                    </div>
+
+                    <div class="mb-6">
+                        <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</span>
+                        <div class="mt-1">{{ $contact->address }}</div>
+                    </div>
+
+                    <div class="mb-6">
+                        <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">status</span>
+                        <span class="text-{{ $contact->is_active ? 'green' : 'red' }}-500">
+                            {{ $contact->is_active ? 'Active' : 'Inactive' }}</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">Created At</span>
+                        <div class="mt-1">
+                            {{-- Check if created_at is not null before formatting --}}
+                            {{ $contact->created_at ? $contact->created_at->format('F j, Y g:i A') : 'N/A' }}
+                        </div>
+                    </div>
+
+                    <a href="{{ route('contacts.index') }}" class="inline-block px-6 py-2 bg-gray-600 text-white font-semibold rounded-md shadow-md hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600">
+                        Back to All Contacts
+                    </a>
+
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

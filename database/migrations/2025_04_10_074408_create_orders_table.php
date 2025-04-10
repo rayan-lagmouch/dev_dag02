@@ -6,28 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('order_tables', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reservation_id')->constrained('reservations')->cascadeOnDelete();
+            $table->foreignId('person_id')->constrained('people')->cascadeOnDelete();
             $table->timestamp('order_time')->useCurrent();
             $table->decimal('total_amount', 10, 2)->default(0.00);
-            $table->string('payment_method', 50)->default('Cash');
-            $table->boolean('is_paid')->default(false);
+            $table->string('payment_method', 50)->default('cash');
+            $table->enum('status', ['paid', 'not_paid', 'cancelled'])->default('not_paid');
+            $table->string('packages')->nullable(); // Store packages as a string, not JSON
+            $table->timestamps();
         });
-
-
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
-        Schema::dropIfExists('order_tables');
+        Schema::dropIfExists('orders');
     }
 };

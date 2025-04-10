@@ -17,6 +17,7 @@ class Reservation extends Model
         'start_time',
         'end_time',
         'number_of_players',
+        'status'
     ];
 
     // Relationship with Person

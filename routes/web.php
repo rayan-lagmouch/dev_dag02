@@ -9,8 +9,13 @@ use Illuminate\Support\Facades\Route;
 
 // Homepage
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::get('/klant-reservering', function () {
+    return view('client-reservation');
+});
+
 
 // Dashboard (accessible to all authenticated users)
 Route::get('/dashboard', function () {

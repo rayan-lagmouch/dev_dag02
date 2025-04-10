@@ -11,13 +11,17 @@ class Order extends Model
 
     // Fillable attributes for mass assignment
     protected $fillable = [
-        'reservation_id',
+        'person_id',
         'order_time',
         'total_amount',
         'payment_method',
-        'is_paid'
+        'status',
     ];
 
+    public function person()
+    {
+        return $this->belongsTo(Person::class);
+    }
     // Relationship with Reservation
     public function reservation()
     {

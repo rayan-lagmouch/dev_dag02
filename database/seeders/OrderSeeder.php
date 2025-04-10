@@ -9,7 +9,7 @@ class OrderSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('order_tables')->insert([
+        DB::table('orders')->insert([
             [
                 'reservation_id' => 1,
                 'order_time' => now(),

@@ -13,17 +13,30 @@ return new class extends Migration
     {
         Schema::create('scores', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('game_date')->useCurrent();
-            $table->foreignId('player_id')->constrained('players');
-            $table->integer('score_value');
-            $table->string('frame_details', 100)->nullable();
-            $table->string('game_type')->nullable();  // e.g., "1v1", "team"
-            $table->integer('round_number')->nullable();
-            $table->boolean('is_winner')->default(false);  // true if player won
-            $table->foreignId('match_id')->nullable()->constrained('matches');  // match group
-            $table->integer('game_duration_seconds')->nullable();  // duration in seconds
-            $table->json('score_breakdown')->nullable();  // breakdown of scores
-            $table->timestamps();  // created_at and updated_at fields
+
+            $table->string('player_name');
+            $table->unsignedInteger('score_value'); // Total game score
+
+            // Store frame-by-frame throw data (for 10 frames)
+            for ($i = 1; $i <= 10; $i++) {
+                $table->unsignedTinyInteger("frame_{$i}_throw_1")->nullable();
+                $table->unsignedTinyInteger("frame_{$i}_throw_2")->nullable();
+            }
+
+            // Optional: additional throws in the 10th frame
+            $table->unsignedTinyInteger('frame_10_throw_3')->nullable();
+
+            $table->unsignedInteger('round_number')->nullable();
+            $table->dateTime('game_date')->nullable();
+
+            $table->unsignedBigInteger('reservation_id')->nullable();
+            $table->unsignedBigInteger('lane_id')->nullable();
+
+            $table->timestamps();
+
+            // Optional: add foreign key constraints if related tables exist
+            // $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('set null');
+            // $table->foreign('lane_id')->references('id')->on('lanes')->onDelete('set null');
         });
     }
 

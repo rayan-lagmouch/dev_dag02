@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto mt-8 px-6">
-        <h1 class="text-3xl font-semibold mb-6 text-white">All Reservations</h1>
+        <h1 class="text-3xl font-semibold mb-6 text-800">All Reservations</h1>
 
         <a href="{{ route('reservations.create') }}" class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200 mb-4 inline-block">
             Add New Reservation
@@ -23,6 +23,7 @@
                         <th class="px-6 py-4 text-left">Start Time</th>
                         <th class="px-6 py-4 text-left">End Time</th>
                         <th class="px-6 py-4 text-left">Number of Players</th>
+                        <th class="px-6 py-4 text-left">Status</th>
                         <th class="px-6 py-4 text-left">Actions</th>
                     </tr>
                 </thead>
@@ -34,6 +35,7 @@
                             <td class="px-6 py-4">{{ $reservation->start_time }}</td>
                             <td class="px-6 py-4">{{ $reservation->end_time }}</td>
                             <td class="px-6 py-4">{{ $reservation->number_of_players }}</td>
+                            <td class="px-6 py-4">{{ $reservation->status }}</td>
                             <td class="px-6 py-4">
                                 <a href="{{ route('reservations.show', $reservation->id) }}" class="text-blue-600 hover:text-blue-800 transition duration-200 mr-2">
                                     <i class="fas fa-eye"></i> View
@@ -42,11 +44,11 @@
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
 
-                                <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this reservation?');">
+                                <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-800 transition duration-200">
-                                        <i class="fas fa-trash"></i> Delete
+                                        <i class="fas fa-trash"></i> Cancel
                                     </button>
                                 </form>
                             </td>

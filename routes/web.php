@@ -12,6 +12,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/klant-reservering', function () {
+    return view('client-reservation');
+});
+
+
 // Dashboard (accessible to all authenticated users)
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -6,6 +6,9 @@ use App\Models\Reservation;
 use App\Models\Person;
 use App\Models\Lane;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Carbon\Carbon;
+use Exception;
 
 class ReservationController extends Controller
 {
@@ -14,6 +17,17 @@ class ReservationController extends Controller
     {
         $reservations = Reservation::with('person', 'lane')->get();
         return view('reservations.index', compact('reservations'));
+    }
+
+    public function show(string $id) 
+    {
+        try {
+            $reservation = Reservation::with('person', 'lane')->findOrFail($id);
+            return view('reservations.show', compact('reservation'));
+        } catch (Exception $e) {
+            // todo log message and show user friendly error
+            return redirect('/404');
+        }
     }
 
     // Show the form for creating a new reservation
@@ -30,7 +44,21 @@ class ReservationController extends Controller
         $request->validate([
             'person_id' => 'required|exists:people,id',
             'lane_id' => 'required|exists:lanes,id',
-            'reservation_date' => 'required|date',
+            'reservation_date' => [
+                'required',
+                'date',
+                'after_or_equal:' . Carbon::today()->toDateString(),
+                Rule::unique('reservations')->where(function ($query) use ($request) {
+                    return $query->where('lane_id', $request->lane_id)
+                                 ->where('reservation_date', $request->reservation_date)
+                                 ->where(function ($query) use ($request) {
+                                     return $query->whereBetween('start_time', [$request->start_time, $request->end_time])
+                                                  ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
+                                                  ->orWhereRaw('? BETWEEN start_time AND end_time', [$request->start_time])
+                                                  ->orWhereRaw('? BETWEEN start_time AND end_time', [$request->end_time]);
+                                 });
+                }),
+            ],
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i',
             'number_of_players' => 'nullable|integer|min:1',
@@ -55,11 +83,40 @@ class ReservationController extends Controller
         $request->validate([
             'person_id' => 'required|exists:people,id',
             'lane_id' => 'required|exists:lanes,id',
-            'reservation_date' => 'required|date',
-            'start_time' => 'required|date_format:H:i',
+            'reservation_date' => [
+                'required',
+                'date',
+                'after_or_equal:' . Carbon::today()->toDateString(),
+                Rule::unique('reservations')->where(function ($query) use ($request) {
+                    return $query->where('lane_id', $request->lane_id)
+                                 ->where('reservation_date', $request->reservation_date)
+                                 ->where(function ($query) use ($request) {
+                                     return $query->whereBetween('start_time', [$request->start_time, $request->end_time])
+                                                  ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
+                                                  ->orWhereRaw('? BETWEEN start_time AND end_time', [$request->start_time])
+                                                  ->orWhereRaw('? BETWEEN start_time AND end_time', [$request->end_time]);
+                                 });
+                })->ignore($request->route('reservation')->id), // Exclude current reservation
+            ],
+            'start_time' => [
+                'required',
+                'date_format:H:i',
+                Rule::unique('reservations')->where(function ($query) use ($request) {
+                    return $query->where('lane_id', $request->lane_id)
+                                 ->where('reservation_date', $request->reservation_date)
+                                 ->where(function ($query) use ($request) {
+                                     return $query->whereBetween('start_time', [$request->start_time, $request->end_time])
+                                                  ->orWhereBetween('end_time', [$request->start_time, $request->end_time])
+                                                  ->orWhereRaw('? BETWEEN start_time AND end_time', [$request->start_time])
+                                                  ->orWhereRaw('? BETWEEN start_time AND end_time', [$request->end_time]);
+                                 });
+                })->ignore($request->route('reservation')->id), // Exclude current reservation
+            ],
             'end_time' => 'required|date_format:H:i',
             'number_of_players' => 'nullable|integer|min:1',
+            'status' => 'required|in:Bevestigd,Geannuleerd,Afwachting Betaling',
         ]);
+        
 
         $reservation->update($request->all());
 
@@ -69,8 +126,10 @@ class ReservationController extends Controller
     // Remove the specified reservation from storage
     public function destroy(Reservation $reservation)
     {
-        $reservation->delete();
+        $reservation->update([
+            'status' => 'Geannuleerd'
+        ]);
 
-        return redirect()->route('reservations.index')->with('success', 'Reservation deleted successfully.');
+        return redirect()->route('reservations.index')->with('success', 'Reservation cancelled successfully.');
     }
 }

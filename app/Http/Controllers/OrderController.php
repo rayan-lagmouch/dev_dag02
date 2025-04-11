@@ -166,7 +166,21 @@ class OrderController extends Controller
         return view('orders.create'); // Display the form to create a new order
     }
 // Cancel an order (update status to cancelled)
-public function cancel($id)
+    public function cancelGuestOrder($id)
+    {
+        $order = Order::findOrFail($id); // Find the order by its ID
+        $order->status = 'cancelled'; // Update status to cancelled
+        $order->save(); // Save the updated order
+
+        // Instead of redirecting, just return a success message
+        return back()->with('success', 'Order cancelled successfully!');
+    }
+
+
+
+
+
+    public function cancel($id)
 {
 $order = Order::findOrFail($id); // Find the order by its ID
 $order->status = 'cancelled'; // Update status to cancelled

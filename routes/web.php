@@ -19,9 +19,16 @@ Route::get('/klant-reservering', function () {
 
 // Route for displaying the guest order page
 Route::get('/guest-order', [OrderController::class, 'showGuestOrderForm'])->name('guest.order');
+
 // Route for processing the guest order form (POST request)
 Route::post('/guest-order', [OrderController::class, 'processGuestOrder'])->name('guest.processOrder');
+
+// Route for canceling a guest's order
+Route::post('/guest/order/{id}/cancel', [OrderController::class, 'cancelGuestOrder'])->name('orders.guest.cancel');
+
+// Route for the order confirmation page
 Route::get('/order/confirmation', [OrderController::class, 'confirmation'])->name('order.confirmation');
+
 
 
 

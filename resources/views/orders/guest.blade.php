@@ -5,7 +5,6 @@
         <h1 class="text-3xl font-semibold mb-6">Guest Checkout</h1>
         <h3 class="text-3xl font-semibold mb-6">Just show this to the cashier!</h3>
 
-
         <!-- Display Validation Errors -->
         @if ($errors->any())
             <div class="mb-4">
@@ -23,11 +22,18 @@
             <div class="mb-4">
                 <table class="table-auto w-full border-separate border-spacing-0">
                     <thead>
+                    @if(session('success'))
+                        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded-lg shadow-md">
+                            <strong class="font-semibold">Success:</strong> {{ session('success') }}
+                        </div>
+                    @endif
+
                     <tr>
                         <th class="px-6 py-2 text-sm text-gray-600">Total Amount</th>
                         <th class="px-6 py-2 text-sm text-gray-600">Payment Method</th>
                         <th class="px-6 py-2 text-sm text-gray-600">Status</th>
                         <th class="px-6 py-2 text-sm text-gray-600">Packages</th>
+                        <th class="px-6 py-2 text-sm text-gray-600">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -55,6 +61,19 @@
                                     @endforeach
                                 @else
                                     <span class="text-gray-500">No packages selected</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-3 text-sm">
+                                @if($order->status != 'cancelled')
+                                    <!-- Cancel Button with Form Trigger -->
+                                    <form action="{{ route('orders.guest.cancel', $order->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 text-xs font-semibold">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-gray-500">This order has been cancelled.</span>
                                 @endif
                             </td>
 
@@ -125,6 +144,8 @@
 
             <!-- Submit Button -->
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Place Order</button>
+
+
         </form>
 
     </div>
